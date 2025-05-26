@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
 
-import java.util.Set;
-
-@Entity(name = "user")
+@Entity(name = "users")
 @Audited
 @Setter
 @Getter
@@ -15,6 +13,7 @@ public class User extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
 
     private String userName;
