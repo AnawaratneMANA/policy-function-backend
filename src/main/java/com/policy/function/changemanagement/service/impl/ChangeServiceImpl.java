@@ -39,7 +39,6 @@ public class ChangeServiceImpl implements ChangeService {
         // Prepare the response
         ChangeResponse changeResponse = objectMapper.convertValue(createdChange, ChangeResponse.class);
         changeResponse.setMessage("Successfully Created Change!");
-        changeResponse.setStatus(200L);
         return changeResponse;
     }
 }
