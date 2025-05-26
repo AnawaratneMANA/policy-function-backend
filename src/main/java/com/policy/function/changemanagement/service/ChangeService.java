@@ -11,6 +11,8 @@ public interface ChangeService {
     ChangeResponse createChange(ChangeRequest changeRequest);
     List<Change> getAllChanges();
     Optional<Change> getChangeById(Long id);
+
+    ChangeResponse approveChange(Long changeId, Long statusId);
     // TODO: View the changes submit with the status
     // TODO: Approver approve the submitted requests
     // TODO: Get a list of Levels

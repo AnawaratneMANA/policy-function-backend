@@ -50,13 +50,44 @@ public class ChangeServiceImpl implements ChangeService {
         return changeResponse;
     }
 
+    /**
+     * Get all the change records.
+     * @return List<Change>
+     */
     @Override
     public List<Change> getAllChanges() {
         return changeRepository.findAll();
     }
 
+    /**
+     * Get a specific change record
+     * @param id > Requested change record.
+     * @return Optional<Change>
+     */
     @Override
     public Optional<Change> getChangeById(Long id) {
         return changeRepository.findById(id);
+    }
+
+    /**
+     * Approver approve the change record.
+     * @param changeId > Change record ID
+     * @param statusId > Approver can either "Approve" or "Reject"
+     * @return {@link ChangeResponse}
+     */
+    @Override
+    public ChangeResponse approveChange(Long changeId, Long statusId) {
+        Change change = changeRepository.findById(changeId)
+                .orElseThrow(() -> new IllegalArgumentException("Change not found"));
+
+        ChangeStatus approvedStatus = changeStatusRepository.findById(statusId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid status ID"));
+
+        change.setStatus(approvedStatus);
+        change.setUpdatedDate(LocalDateTime.now());
+        Change approvedChange =  changeRepository.save(change);
+        ChangeResponse changeResponse = objectMapper.convertValue(approvedChange, ChangeResponse.class);
+        changeResponse.setMessage("Successfully Approved Change!");
+        return changeResponse;
     }
 }

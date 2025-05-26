@@ -4,7 +4,6 @@ import com.policy.function.changemanagement.domain.Change;
 import com.policy.function.changemanagement.dto.ChangeRequest;
 import com.policy.function.changemanagement.dto.ChangeResponse;
 import com.policy.function.changemanagement.service.ChangeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +36,14 @@ public class ChangeController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<ChangeResponse> approveChange(
+            @PathVariable Long id,
+            @RequestParam("statusId") Long statusId) {
+        ChangeResponse approvedChange = changeService.approveChange(id, statusId);
+        return ResponseEntity.ok(approvedChange);
+    }
+
 
 }
