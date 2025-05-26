@@ -6,10 +6,9 @@ import com.policy.function.changemanagement.dto.ChangeResponse;
 import com.policy.function.changemanagement.service.ChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/changes")
@@ -25,6 +24,18 @@ public class ChangeController {
     public ResponseEntity<ChangeResponse> insertChange(@RequestBody ChangeRequest changeDto) {
         ChangeResponse saved = changeService.createChange(changeDto);
         return ResponseEntity.ok(saved);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Change>> getAllChanges() {
+        return ResponseEntity.ok(changeService.getAllChanges());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Change> getChangeById(@PathVariable Long id) {
+        return changeService.getChangeById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

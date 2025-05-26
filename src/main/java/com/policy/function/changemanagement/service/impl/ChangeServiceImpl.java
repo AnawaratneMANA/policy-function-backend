@@ -8,10 +8,10 @@ import com.policy.function.changemanagement.dto.ChangeResponse;
 import com.policy.function.changemanagement.repository.ChangeRepository;
 import com.policy.function.changemanagement.repository.ChangeStatusRepository;
 import com.policy.function.changemanagement.service.ChangeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,5 +48,15 @@ public class ChangeServiceImpl implements ChangeService {
         ChangeResponse changeResponse = objectMapper.convertValue(createdChange, ChangeResponse.class);
         changeResponse.setMessage("Successfully Created Change!");
         return changeResponse;
+    }
+
+    @Override
+    public List<Change> getAllChanges() {
+        return changeRepository.findAll();
+    }
+
+    @Override
+    public Optional<Change> getChangeById(Long id) {
+        return changeRepository.findById(id);
     }
 }
