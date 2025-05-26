@@ -3,10 +3,13 @@ package com.policy.function.changemanagement.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.policy.function.changemanagement.domain.Change;
 import com.policy.function.changemanagement.domain.ChangeStatus;
+import com.policy.function.changemanagement.domain.User;
 import com.policy.function.changemanagement.dto.ChangeRequest;
 import com.policy.function.changemanagement.dto.ChangeResponse;
+import com.policy.function.changemanagement.dto.UserDto;
 import com.policy.function.changemanagement.repository.ChangeRepository;
 import com.policy.function.changemanagement.repository.ChangeStatusRepository;
+import com.policy.function.changemanagement.repository.UserRepository;
 import com.policy.function.changemanagement.service.ChangeService;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +26,13 @@ public class ChangeServiceImpl implements ChangeService {
 
     private final ObjectMapper objectMapper;
     private final ChangeStatusRepository changeStatusRepository;
+    private final UserRepository userRepository;
 
-    public ChangeServiceImpl(ChangeRepository changeRepository, ObjectMapper objectMapper, ChangeStatusRepository changeStatusRepository) {
+    public ChangeServiceImpl(ChangeRepository changeRepository, ObjectMapper objectMapper, ChangeStatusRepository changeStatusRepository, UserRepository userRepository) {
         this.changeRepository = changeRepository;
         this.objectMapper = objectMapper;
         this.changeStatusRepository = changeStatusRepository;
+        this.userRepository = userRepository;
     }
 
     /**

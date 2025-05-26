@@ -5,10 +5,9 @@ import com.policy.function.changemanagement.dto.LoginRequestDto;
 import com.policy.function.changemanagement.dto.UserDto;
 import com.policy.function.changemanagement.service.LoginService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,5 +30,10 @@ public class LoginController {
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         UserDto user = loginService.createUser(userDto);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/approvers")
+    public ResponseEntity<List<UserDto>> getApprovers() {
+        return ResponseEntity.ok(loginService.getAllApprovers());
     }
 }

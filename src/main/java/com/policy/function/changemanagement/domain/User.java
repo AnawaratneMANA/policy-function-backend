@@ -25,4 +25,15 @@ public class User extends Auditable {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role userRole;
+
+    public User(){
+
+    }
+
+    public User(Long userId, String userName, Role userRole) {
+        super();
+        this.userId = userId;
+        this.userName = userName;
+        this.userRole = userRole;
+    }
 }

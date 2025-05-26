@@ -3,10 +3,13 @@ package com.policy.function.changemanagement.controller;
 import com.policy.function.changemanagement.domain.Change;
 import com.policy.function.changemanagement.dto.ChangeRequest;
 import com.policy.function.changemanagement.dto.ChangeResponse;
+import com.policy.function.changemanagement.dto.UserDto;
+import com.policy.function.changemanagement.enums.CriticalityLevel;
 import com.policy.function.changemanagement.service.ChangeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -45,5 +48,11 @@ public class ChangeController {
         return ResponseEntity.ok(approvedChange);
     }
 
-
+    @GetMapping("/criticality-levels")
+    public ResponseEntity<List<String>> getCriticalityLevels() {
+        List<String> levels = Arrays.stream(CriticalityLevel.values())
+                .map(Enum::name)
+                .toList();
+        return ResponseEntity.ok(levels);
+    }
 }

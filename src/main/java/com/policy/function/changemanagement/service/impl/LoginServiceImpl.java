@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -27,6 +28,11 @@ public class LoginServiceImpl implements LoginService {
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * Create user, registration (A simple one without using JWT)
+     * @param userDto > Request structure.
+     * @return {@link UserDto}
+     */
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = new User();
@@ -49,11 +55,34 @@ public class LoginServiceImpl implements LoginService {
         return response;
     }
 
+    /**
+     * Login endpoint, simple one to simulate the user login. (Not secure)
+     * @param loginRequest > Login request (Username / Password)
+     * @return boolean
+     */
     @Override
     public boolean login(LoginRequestDto loginRequest) {
         return userRepository.findByUserName(loginRequest.getUsername())
                 .map(user -> BCrypt.checkpw(loginRequest.getPassword(), user.getUserPassword()))
                 .orElse(false);
+    }
+
+    /**
+     * Get a list of Approvers, for the dropdown when creating the change.
+     * @return {@link List<UserDto>}
+     */
+    @Override
+    public List<UserDto> getAllApprovers() {
+        List<User> users =  userRepository.findAllApprovers().stream()
+                .map(user -> new User(user.getUserId(), user.getUserName(), user.getUserRole()))
+                .toList();
+        return users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getUserId());
+            userDto.setUserName(user.getUserName());
+            userDto.setRoleId(user.getUserRole().getRoleId());
+            return userDto;
+        }).toList();
     }
 
 }
