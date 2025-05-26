@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChangeResponse {
-    private String id;
+    private String changeId;
     private String message;
     private ChangeStatus status;
 }
