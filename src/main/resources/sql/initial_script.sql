@@ -104,3 +104,6 @@ CREATE TABLE change_AUD
 CREATE SEQUENCE revinfo_seq START WITH 1 INCREMENT BY 1;
 ALTER TABLE revinfo ALTER COLUMN rev SET DEFAULT nextval('revinfo_seq');
 ALTER SEQUENCE revinfo_seq INCREMENT BY 50;
+
+ALTER TABLE "user" RENAME TO users;
+ALTER TABLE changemanagement.user_aud RENAME TO users_aud;
