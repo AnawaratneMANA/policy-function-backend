@@ -14,6 +14,10 @@ public interface ChangeService {
     Optional<Change> getChangeById(Long id);
     ChangeResponse approveChange(Long changeId, Long statusId);
 
+    List<ChangeResponse> getChangesByCreatedUserId(Long userId);
+
+    List<ChangeResponse> getChangesByApproverId(Long approverId);
+
     // TODO: Get a list of Levels
     // TODO: Get a list of Approver
 }

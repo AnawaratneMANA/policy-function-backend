@@ -3,10 +3,8 @@ package com.policy.function.changemanagement.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.policy.function.changemanagement.domain.Change;
 import com.policy.function.changemanagement.domain.ChangeStatus;
-import com.policy.function.changemanagement.domain.User;
 import com.policy.function.changemanagement.dto.ChangeRequest;
 import com.policy.function.changemanagement.dto.ChangeResponse;
-import com.policy.function.changemanagement.dto.UserDto;
 import com.policy.function.changemanagement.repository.ChangeRepository;
 import com.policy.function.changemanagement.repository.ChangeStatusRepository;
 import com.policy.function.changemanagement.repository.UserRepository;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ChangeServiceImpl implements ChangeService {
@@ -94,5 +93,31 @@ public class ChangeServiceImpl implements ChangeService {
         ChangeResponse changeResponse = objectMapper.convertValue(approvedChange, ChangeResponse.class);
         changeResponse.setMessage("Successfully Approved Change!");
         return changeResponse;
+    }
+
+    /**
+     * This method is used to get the changes given the user who created them.
+     * @param userId > Created Users ID
+     * @return List<ChangeResponse>
+     */
+    @Override
+    public List<ChangeResponse> getChangesByCreatedUserId(Long userId) {
+        List<Change> changes = changeRepository.findByCreatedBy(userId);
+        return changes.stream()
+                .map(change -> objectMapper.convertValue(change, ChangeResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to get the changes given the approver ID
+     * @param approverId > Assigned approver
+     * @return List<ChangeResponse>
+     */
+    @Override
+    public List<ChangeResponse> getChangesByApproverId(Long approverId) {
+        List<Change> changes = changeRepository.findByApproverId(approverId);
+        return changes.stream()
+                .map(change -> objectMapper.convertValue(change, ChangeResponse.class))
+                .collect(Collectors.toList());
     }
 }

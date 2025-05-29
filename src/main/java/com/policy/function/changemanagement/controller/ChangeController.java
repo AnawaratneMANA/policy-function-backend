@@ -55,4 +55,16 @@ public class ChangeController {
                 .toList();
         return ResponseEntity.ok(levels);
     }
+
+    @GetMapping("/created-by/{userId}")
+    public ResponseEntity<List<ChangeResponse>> getChangesByCreatedUserId(@PathVariable Long userId) {
+        List<ChangeResponse> changes = changeService.getChangesByCreatedUserId(userId);
+        return ResponseEntity.ok(changes);
+    }
+
+    @GetMapping("/approved-by/{approverId}")
+    public ResponseEntity<List<ChangeResponse>> getChangesByApproverId(@PathVariable Long approverId) {
+        List<ChangeResponse> changes = changeService.getChangesByApproverId(approverId);
+        return ResponseEntity.ok(changes);
+    }
 }
