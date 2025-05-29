@@ -25,13 +25,13 @@ public class ChangeServiceImpl implements ChangeService {
 
     private final ObjectMapper objectMapper;
     private final ChangeStatusRepository changeStatusRepository;
-    private final UserRepository userRepository;
 
-    public ChangeServiceImpl(ChangeRepository changeRepository, ObjectMapper objectMapper, ChangeStatusRepository changeStatusRepository, UserRepository userRepository) {
+    public ChangeServiceImpl(
+            ChangeRepository changeRepository,
+            ObjectMapper objectMapper, ChangeStatusRepository changeStatusRepository) {
         this.changeRepository = changeRepository;
         this.objectMapper = objectMapper;
         this.changeStatusRepository = changeStatusRepository;
-        this.userRepository = userRepository;
     }
 
     /**
