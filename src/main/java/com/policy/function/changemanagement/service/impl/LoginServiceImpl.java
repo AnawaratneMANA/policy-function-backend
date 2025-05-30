@@ -3,6 +3,7 @@ package com.policy.function.changemanagement.service.impl;
 import com.policy.function.changemanagement.domain.Role;
 import com.policy.function.changemanagement.domain.User;
 import com.policy.function.changemanagement.dto.LoginRequestDto;
+import com.policy.function.changemanagement.dto.LoginResponseDto;
 import com.policy.function.changemanagement.dto.UserDto;
 import com.policy.function.changemanagement.repository.RoleRepository;
 import com.policy.function.changemanagement.repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -61,10 +63,15 @@ public class LoginServiceImpl implements LoginService {
      * @return boolean
      */
     @Override
-    public boolean login(LoginRequestDto loginRequest) {
+    public Optional<LoginResponseDto> login(LoginRequestDto loginRequest) {
         return userRepository.findByUserName(loginRequest.getUsername())
-                .map(user -> BCrypt.checkpw(loginRequest.getPassword(), user.getUserPassword()))
-                .orElse(false);
+                .filter(user -> BCrypt.checkpw(loginRequest.getPassword(), user.getUserPassword()))
+                .map(user -> {
+                    LoginResponseDto response = new LoginResponseDto();
+                    response.setUserId(user.getUserId());
+                    response.setRoleId(user.getUserRole() != null ? user.getUserRole().getRoleId() : null);
+                    return response;
+                });
     }
 
     /**

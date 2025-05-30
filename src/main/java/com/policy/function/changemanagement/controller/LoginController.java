@@ -2,12 +2,15 @@ package com.policy.function.changemanagement.controller;
 
 import com.policy.function.changemanagement.domain.User;
 import com.policy.function.changemanagement.dto.LoginRequestDto;
+import com.policy.function.changemanagement.dto.LoginResponseDto;
 import com.policy.function.changemanagement.dto.UserDto;
 import com.policy.function.changemanagement.service.LoginService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,9 +24,15 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginRequestDto loginRequest) {
-        boolean isAuthenticated = loginService.login(loginRequest);
-        return ResponseEntity.ok(isAuthenticated);
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
+        Optional<LoginResponseDto> response = loginService.login(loginRequest);
+        if (response.isPresent()) {
+            return ResponseEntity.ok(response.get());
+        } else {
+            // Use 401 Unauthorized for failed login
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid username or password");
+        }
     }
 
     @PostMapping("/register")
