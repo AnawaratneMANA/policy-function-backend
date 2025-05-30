@@ -11,5 +11,7 @@ import lombok.Setter;
 public class ChangeResponse {
     private String changeId;
     private String message;
+    private String changeName;
+    private String changeDescription;
     private ChangeStatus status;
 }

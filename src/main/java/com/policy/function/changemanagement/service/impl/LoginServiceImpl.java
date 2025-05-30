@@ -64,12 +64,14 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public Optional<LoginResponseDto> login(LoginRequestDto loginRequest) {
+        log.info("Login request: {}", loginRequest);
         return userRepository.findByUserName(loginRequest.getUsername())
                 .filter(user -> BCrypt.checkpw(loginRequest.getPassword(), user.getUserPassword()))
                 .map(user -> {
                     LoginResponseDto response = new LoginResponseDto();
                     response.setUserId(user.getUserId());
                     response.setRoleId(user.getUserRole() != null ? user.getUserRole().getRoleId() : null);
+                    log.info("User Login Successfully");
                     return response;
                 });
     }
