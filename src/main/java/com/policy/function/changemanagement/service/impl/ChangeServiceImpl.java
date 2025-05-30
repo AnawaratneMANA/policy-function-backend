@@ -3,12 +3,15 @@ package com.policy.function.changemanagement.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.policy.function.changemanagement.domain.Change;
 import com.policy.function.changemanagement.domain.ChangeStatus;
+import com.policy.function.changemanagement.domain.User;
 import com.policy.function.changemanagement.dto.ChangeRequest;
 import com.policy.function.changemanagement.dto.ChangeResponse;
 import com.policy.function.changemanagement.repository.ChangeRepository;
 import com.policy.function.changemanagement.repository.ChangeStatusRepository;
 import com.policy.function.changemanagement.repository.UserRepository;
 import com.policy.function.changemanagement.service.ChangeService;
+import com.policy.function.changemanagement.service.EmailService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,13 +28,17 @@ public class ChangeServiceImpl implements ChangeService {
 
     private final ObjectMapper objectMapper;
     private final ChangeStatusRepository changeStatusRepository;
+    private final UserRepository userRepository;
+    private final EmailService emailService;
 
     public ChangeServiceImpl(
             ChangeRepository changeRepository,
-            ObjectMapper objectMapper, ChangeStatusRepository changeStatusRepository) {
+            ObjectMapper objectMapper, ChangeStatusRepository changeStatusRepository, UserRepository userRepository, EmailService emailService) {
         this.changeRepository = changeRepository;
         this.objectMapper = objectMapper;
         this.changeStatusRepository = changeStatusRepository;
+        this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -89,6 +96,10 @@ public class ChangeServiceImpl implements ChangeService {
 
         change.setStatus(approvedStatus);
         change.setUpdatedDate(LocalDateTime.now());
+        // TODO: Send the email to the creator.
+        User creator = userRepository.findById(change.getCreatedBy())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + change.getCreatedBy()));
+        // emailService.sendTestEmail();
         Change approvedChange =  changeRepository.save(change);
         ChangeResponse changeResponse = objectMapper.convertValue(approvedChange, ChangeResponse.class);
         changeResponse.setMessage("Successfully Approved Change!");
