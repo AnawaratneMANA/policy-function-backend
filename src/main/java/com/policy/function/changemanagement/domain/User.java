@@ -26,6 +26,8 @@ public class User extends Auditable {
     @JoinColumn(name = "role_id")
     private Role userRole;
 
+    private String email;
+
     public User(){
 
     }

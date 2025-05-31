@@ -101,9 +101,17 @@ CREATE TABLE change_AUD
     PRIMARY KEY (change_id, rev)
 );
 
+-- Audit table created alterations.
 CREATE SEQUENCE revinfo_seq START WITH 1 INCREMENT BY 1;
 ALTER TABLE revinfo ALTER COLUMN rev SET DEFAULT nextval('revinfo_seq');
 ALTER SEQUENCE revinfo_seq INCREMENT BY 50;
 
+-- Rework the name of the user table.
 ALTER TABLE "user" RENAME TO users;
 ALTER TABLE changemanagement.user_aud RENAME TO users_aud;
+
+-- Create the User email column and the audit table column.
+ALTER TABLE changemanagement.users ADD email varchar NULL;
+ALTER TABLE changemanagement.users_aud ADD email varchar NULL;
+
+

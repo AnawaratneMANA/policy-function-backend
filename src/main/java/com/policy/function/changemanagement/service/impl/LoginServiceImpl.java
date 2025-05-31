@@ -71,6 +71,8 @@ public class LoginServiceImpl implements LoginService {
                     LoginResponseDto response = new LoginResponseDto();
                     response.setUserId(user.getUserId());
                     response.setRoleId(user.getUserRole() != null ? user.getUserRole().getRoleId() : null);
+                    response.setEmail(user.getEmail());
+                    response.setUserName(user.getUserName());
                     log.info("User Login Successfully");
                     return response;
                 });
